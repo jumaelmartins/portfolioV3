@@ -1,6 +1,7 @@
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
 import { FloatingNav } from './components/FloatingNav';
+import { FloatingWhatsApp } from './components/FloatingWhatsApp';
 import { Problems } from './components/Problems';
 import { Services } from './components/Services';
 import { CaseStudies } from './components/CaseStudies';
@@ -19,6 +20,7 @@ export default function App() {
         <Header />
         <Hero />
         <FloatingNav />
+        <FloatingWhatsApp />
         <Problems />
         <Services />
         <CaseStudies />

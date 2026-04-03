@@ -100,12 +100,12 @@ export function Footer() {
                 </motion.button>
 
                 <motion.a
-                  href="tel:+5598066206"
+                  href="tel:+557199604206"
                   className="flex items-center gap-3 text-sm text-white/40 hover:text-blue-400 transition-colors"
                   whileHover={{ x: 4 }}
                 >
                   <Phone size={16} />
-                  <span>+55 (98) 98066-206</span>
+                  <span>+55 (71) 996 040 206</span>
                 </motion.a>
               </div>
 

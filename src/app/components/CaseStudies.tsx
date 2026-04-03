@@ -5,44 +5,16 @@ import { useApp } from '../context/AppContext';
 export function CaseStudies() {
   const { t } = useApp();
 
-  const cases = [
-    {
-      title: 'WhatsApp Report BOT',
-      client: 'ONDACOM',
-      problem: 'The operational team, has a lack of information to make decisions, and spent a lot of time generating reports manually, which was time-consuming and prone to errors.',
-      solution: 'Built a custom automation BOT integrating their WhatsApp, providing them with the information they need to make decisions in a clear and concise way.',
-      results: [
-        { icon: TrendingUp, text: '80% reduction in manual work, fast decision making' },
-        { icon: Clock, text: '3x faster report generation' },
-        { icon: Users, text: 'Team free for dealing with operational activities, team and clients management and making strategic decisions' },
-      ],
-      tech: ['Python', 'WhatsApp API'],
-    },
-    {
-      title: 'Internal Dashboard & Analytics',
-      client: 'I-SYSTEMS',
-      problem: 'No centralized view of key metrics. Team was spending hours compiling reports from different sources.',
-      solution: 'Developed a real-time analytics dashboard aggregating data from multiple sources with custom visualizations.',
-      results: [
-        { icon: TrendingUp, text: 'Real-time business insights' },
-        { icon: Clock, text: '90% faster reporting' },
-        { icon: Users, text: 'Better data-driven decisions' },
-      ],
-      tech: ['React', 'TypeScript', 'Python','MySQL'],
-    },
-    // {
-    //   title: 'MVP for Booking Platform',
-    //   client: 'Service marketplace startup',
-    //   problem: 'Needed to validate business idea quickly with a functional MVP to attract initial users and investors.',
-    //   solution: 'Built a lean but robust booking platform with user auth, payments, scheduling, and admin panel in 6 weeks.',
-    //   results: [
-    //     { icon: TrendingUp, text: '200+ users in first month' },
-    //     { icon: Clock, text: 'Launched in 6 weeks' },
-    //     { icon: Users, text: 'Secured seed funding' },
-    //   ],
-    //   tech: ['Next.js', 'Stripe', 'Vercel', 'Supabase'],
-    // },
-  ];
+  const casesItems = t('cases.items') || [];
+  const icons = [TrendingUp, Clock, Users];
+
+  const cases = casesItems.map((item: any) => ({
+    ...item,
+    results: item.results.map((text: string, i: number) => ({
+      icon: icons[i % icons.length],
+      text
+    }))
+  }));
 
   return (
     <section

@@ -3,97 +3,8 @@ import { ExternalLink, Github, X } from 'lucide-react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'motion/react';
 import { useApp } from '../context/AppContext';
 
-/* ─── Project data ──────────────────────────────────────────────────── */
-const allProjects = [
-  {
-    id: 1,
-    title: 'Zapflow',
-    description: 'Plataforma de automação de atendimento via WhatsApp com arquitetura multi-tenant.',
-    emoji: '🛍️',
-    accent: '#f59e0b',
-    tech: ['NextJS', 'TypeScript', 'TailwindCSS', 'PostgreSQL', 'Redis', 'Docker', 'NestJS'],
-    category: 'FULLSTACK',
-    url: 'https://beta.jmtechsolutions.com.br/',
-    github: '',
-    year: '2026',
-  },
-  {
-    id: 2,
-    title: 'JM Tech Solutions',
-    description: 'Landing page da empresa JM Tech Solutions.',
-    emoji: '🎨',
-    accent: '#10b981',
-    tech: ['HTML', 'CSS', 'JavaScript', 'TailwindCSS'],
-    category: 'FRONTEND',
-    url: 'https://dev.jmtechsolutions.com.br/',
-    github: 'https://github.com/jumaelmartins/jm-techolutions',
-    year: '2026',
-  },
-  {
-    id: 3,
-    title: 'Portifolio Manager',
-    description: 'Um CMS open source para gerenciar projetos, experiências, cursos e formações acadêmicas de forma simples e centralizada. A ideia é disponibilizar uma API para ser consumida em portfólios pessoais ou sites, facilitando a manutenção do conteúdo sem precisar alterar diretamente o frontend.',
-    emoji: '⚙️',
-    accent: '#6366f1',
-    tech: ['Node', 'NestJS', 'PostgreSQL'],
-    category: 'BACKEND',
-    url: '-',
-    github: 'https://github.com/jumaelmartins/portifolio_manager',
-    year: '2025',
-  },
-  // {
-  //   id: 4,
-  //   title: 'App Full-Stack',
-  //   description: 'Aplicação completa com SSR, autenticação de usuários, banco de dados relacional e deploy CI/CD.',
-  //   emoji: '🚀',
-  //   accent: '#ec4899',
-  //   tech: ['React', 'Node', 'PostgreSQL'],
-  //   category: 'FULLSTACK',
-  //   url: 'https://example.com',
-  //   github: 'https://github.com/example/project4',
-  //   year: '2023',
-  // },
-  // {
-  //   id: 5,
-  //   title: 'Dashboard Analytics',
-  //   description: 'Dashboard interativo com gráficos em tempo real, exportação de relatórios e filtros avançados.',
-  //   emoji: '📊',
-  //   accent: '#14b8a6',
-  //   tech: ['JavaScript', 'Chart.js', 'CSS'],
-  //   category: 'FRONTEND',
-  //   url: 'https://example.com',
-  //   github: 'https://github.com/example/project5',
-  //   year: '2024',
-  // },
-  // {
-  //   id: 6,
-  //   title: 'Sistema CRM',
-  //   description: 'CRM customizado com pipeline de vendas, automação de e-mails, integrações e relatórios gerenciais.',
-  //   emoji: '💼',
-  //   accent: '#f97316',
-  //   tech: ['TypeScript', 'React', 'Node'],
-  //   category: 'FULLSTACK',
-  //   url: 'https://example.com',
-  //   github: 'https://github.com/example/project6',
-  //   year: '2023',
-  // },
-];
-
-const FILTER_GROUPS = [
-  { label: 'TODOS', key: 'TODOS' },
-  { label: 'FRONTEND', key: 'FRONTEND' },
-  { label: 'BACKEND', key: 'BACKEND' },
-  { label: 'FULLSTACK', key: 'FULLSTACK' },
-  { label: 'HTML', key: 'HTML' },
-  { label: 'CSS', key: 'CSS' },
-  { label: 'JS', key: 'JAVASCRIPT' },
-  { label: 'TS', key: 'TYPESCRIPT' },
-  { label: 'REACT', key: 'REACT' },
-  { label: 'NODE', key: 'NODE' },
-];
-
 /* ─── 3D Tilt Project Card ──────────────────────────────────────────── */
-function ProjectCard({ project, index }: { project: typeof allProjects[0]; index: number }) {
+function ProjectCard({ project, index }: { project: any; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
@@ -193,7 +104,7 @@ function ProjectCard({ project, index }: { project: typeof allProjects[0]; index
 
           {/* Tech pills */}
           <div className="flex flex-wrap gap-1.5 mb-5">
-            {project.tech.map((t) => (
+            {project.tech.map((t: string) => (
               <span
                 key={t}
                 className="text-xs font-mono px-2 py-0.5 rounded border text-gray-500 dark:text-[#6b7fa3]"
@@ -243,8 +154,22 @@ function ProjectCard({ project, index }: { project: typeof allProjects[0]; index
 /* ─── Main section ──────────────────────────────────────────────────── */
 export function Projects() {
   const { t } = useApp();
+  const allProjects = useMemo(() => t('projects.items') || [], [t]);
   const [selectedFilters, setSelectedFilters] = useState<string[]>(['TODOS']);
   const [searchQuery, setSearchQuery] = useState('');
+
+  const FILTER_GROUPS = [
+    { label: t('nav.all') || 'TODOS', key: 'TODOS' },
+    { label: 'FRONTEND', key: 'FRONTEND' },
+    { label: 'BACKEND', key: 'BACKEND' },
+    { label: 'FULLSTACK', key: 'FULLSTACK' },
+    { label: 'HTML', key: 'HTML' },
+    { label: 'CSS', key: 'CSS' },
+    { label: 'JS', key: 'JAVASCRIPT' },
+    { label: 'TS', key: 'TYPESCRIPT' },
+    { label: 'REACT', key: 'REACT' },
+    { label: 'NODE', key: 'NODE' },
+  ];
 
   const filteredProjects = useMemo(() => {
     return allProjects.filter((project) => {
@@ -407,13 +332,13 @@ export function Projects() {
                   }}
                 >
                   <X size={11} />
-                  limpar
+                  {t('projects.clear')}
                 </motion.button>
               )}
             </AnimatePresence>
 
             <span className="ml-auto font-mono text-xs text-gray-400 dark:text-[#4a5a78]">
-              {filteredProjects.length} {filteredProjects.length === 1 ? 'projeto' : 'projetos'}
+              {filteredProjects.length} {filteredProjects.length === 1 ? t('projects.count.singular') : t('projects.count.plural')}
             </span>
           </div>
         </motion.div>

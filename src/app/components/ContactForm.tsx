@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { X, Send, User, Mail, MessageSquare } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useApp } from '../context/AppContext';
 
 interface ContactFormProps {
   isOpen: boolean;
@@ -8,6 +9,7 @@ interface ContactFormProps {
 }
 
 export function ContactForm({ isOpen, onClose }: ContactFormProps) {
+  const { t } = useApp();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
@@ -79,8 +81,8 @@ export function ContactForm({ isOpen, onClose }: ContactFormProps) {
 
               {/* Header */}
               <div className="mb-6">
-                <h2 className="text-3xl font-bold mb-2">Vamos conversar!</h2>
-                <p className="text-gray-600">Preencha o formulário abaixo e entrarei em contato em breve.</p>
+                <h2 className="text-3xl font-bold mb-2">{t('contact.title')}</h2>
+                <p className="text-gray-600">{t('contact.subtitle')}</p>
               </div>
 
               {submitSuccess ? (
@@ -92,15 +94,15 @@ export function ContactForm({ isOpen, onClose }: ContactFormProps) {
                   <div className="w-16 h-16 bg-green-500 rounded-full flex items-center justify-center mx-auto mb-4">
                     <Send className="text-white" size={32} />
                   </div>
-                  <h3 className="text-2xl font-bold text-green-600 mb-2">Mensagem Enviada!</h3>
-                  <p className="text-gray-600">Obrigado pelo contato. Responderei em breve!</p>
+                  <h3 className="text-2xl font-bold text-green-600 mb-2">{t('contact.success.title')}</h3>
+                  <p className="text-gray-600">{t('contact.success.message')}</p>
                 </motion.div>
               ) : (
                 <form onSubmit={handleSubmit} className="space-y-4">
                   {/* Name Field */}
                   <div>
                     <label htmlFor="name" className="block text-sm font-bold mb-2">
-                      Nome
+                      {t('contact.name.label')}
                     </label>
                     <div className="relative">
                       <User className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
@@ -112,7 +114,7 @@ export function ContactForm({ isOpen, onClose }: ContactFormProps) {
                         onChange={handleChange}
                         required
                         className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600"
-                        placeholder="Seu nome completo"
+                        placeholder={t('contact.name.placeholder')}
                       />
                     </div>
                   </div>
@@ -120,7 +122,7 @@ export function ContactForm({ isOpen, onClose }: ContactFormProps) {
                   {/* Email Field */}
                   <div>
                     <label htmlFor="email" className="block text-sm font-bold mb-2">
-                      E-mail
+                      {t('contact.email.label')}
                     </label>
                     <div className="relative">
                       <Mail className="absolute left-3 top-1/2 -translate-y-1/2 text-gray-400" size={20} />
@@ -132,7 +134,7 @@ export function ContactForm({ isOpen, onClose }: ContactFormProps) {
                         onChange={handleChange}
                         required
                         className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600"
-                        placeholder="seu@email.com"
+                        placeholder={t('contact.email.placeholder')}
                       />
                     </div>
                   </div>
@@ -140,7 +142,7 @@ export function ContactForm({ isOpen, onClose }: ContactFormProps) {
                   {/* Message Field */}
                   <div>
                     <label htmlFor="message" className="block text-sm font-bold mb-2">
-                      Mensagem
+                      {t('contact.message.label')}
                     </label>
                     <div className="relative">
                       <MessageSquare className="absolute left-3 top-3 text-gray-400" size={20} />
@@ -152,7 +154,7 @@ export function ContactForm({ isOpen, onClose }: ContactFormProps) {
                         required
                         rows={4}
                         className="w-full pl-10 pr-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 resize-none"
-                        placeholder="Digite sua mensagem aqui..."
+                        placeholder={t('contact.message.placeholder')}
                       />
                     </div>
                   </div>
@@ -172,12 +174,12 @@ export function ContactForm({ isOpen, onClose }: ContactFormProps) {
                           animate={{ rotate: 360 }}
                           transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                         />
-                        Enviando...
+                        {t('contact.button.sending')}
                       </>
                     ) : (
                       <>
                         <Send size={20} />
-                        Enviar Mensagem
+                        {t('contact.button.send')}
                       </>
                     )}
                   </motion.button>

@@ -9,7 +9,7 @@ interface AppContextType {
   theme: Theme;
   setTheme: (theme: Theme) => void;
   toggleTheme: () => void;
-  t: (key: string) => string;
+  t: (key: string) => any;
 }
 
 const AppContext = createContext<AppContextType | undefined>(undefined);
@@ -21,6 +21,7 @@ const translations: Record<Language, Record<string, any>> = {
     'nav.cases': 'Case Studies',
     'nav.projects': 'Projects',
     'nav.contact': 'Contact',
+    'nav.all': 'ALL',
     
     // Hero
     'hero.available': 'Available for new projects',
@@ -103,12 +104,79 @@ const translations: Record<Language, Record<string, any>> = {
     'cases.problem': 'Problem',
     'cases.solution': 'Solution',
     'cases.results': 'Results',
+    'cases.items': [
+      {
+        title: 'WhatsApp Report BOT',
+        client: 'ONDACOM',
+        problem: 'The operational team, has a lack of information to make decisions, and spent a lot of time generating reports manually, which was time-consuming and prone to errors.',
+        solution: 'Built a custom automation BOT integrating their WhatsApp, providing them with the information they need to make decisions in a clear and concise way.',
+        results: [
+          '80% reduction in manual work, fast decision making',
+          '3x faster report generation',
+          'Team free for dealing with operational activities, team and clients management and making strategic decisions',
+        ],
+        tech: ['Python', 'WhatsApp API'],
+      },
+      {
+        title: 'Internal Dashboard & Analytics',
+        client: 'I-SYSTEMS',
+        problem: 'No centralized view of key metrics. Team was spending hours compiling reports from different sources.',
+        solution: 'Developed a real-time analytics dashboard aggregating data from multiple sources with custom visualizations.',
+        results: [
+          'Real-time business insights',
+          '90% faster reporting',
+          'Better data-driven decisions',
+        ],
+        tech: ['React', 'TypeScript', 'Python','MySQL'],
+      },
+    ],
     
     // Projects
     'projects.title': 'PROJECTS.',
     'projects.filters': 'FILTERS:',
     'projects.search': 'Search by name, language or technologies...',
     'projects.notfound': 'No projects found with these filters.',
+    'projects.clear': 'Clear',
+    'projects.count.singular': 'project',
+    'projects.count.plural': 'projects',
+    'projects.items': [
+      {
+        id: 1,
+        title: 'Zapflow',
+        description: 'WhatsApp service automation platform with multi-tenant architecture.',
+        emoji: '🛍️',
+        accent: '#f59e0b',
+        tech: ['NextJS', 'TypeScript', 'TailwindCSS', 'PostgreSQL', 'Redis', 'Docker', 'NestJS'],
+        category: 'FULLSTACK',
+        url: 'https://beta.jmtechsolutions.com.br/',
+        github: '',
+        year: '2026',
+      },
+      {
+        id: 2,
+        title: 'JM Tech Solutions',
+        description: 'Landing page for the company JM Tech Solutions.',
+        emoji: '🎨',
+        accent: '#10b981',
+        tech: ['HTML', 'CSS', 'JavaScript', 'TailwindCSS'],
+        category: 'FRONTEND',
+        url: 'https://dev.jmtechsolutions.com.br/',
+        github: 'https://github.com/jumaelmartins/jm-techolutions',
+        year: '2026',
+      },
+      {
+        id: 3,
+        title: 'Portifolio Manager',
+        description: 'An open source CMS to manage projects, experiences, courses, and academic backgrounds in a simple and centralized way. The idea is to provide an API to be consumed in personal portfolios or websites, facilitating content maintenance without needing to change the frontend directly.',
+        emoji: '⚙️',
+        accent: '#6366f1',
+        tech: ['Node', 'NestJS', 'PostgreSQL'],
+        category: 'BACKEND',
+        url: '-',
+        github: 'https://github.com/jumaelmartins/portifolio_manager',
+        year: '2025',
+      },
+    ],
     
     // Final CTA
     'cta.title1': "Let's build something",
@@ -125,6 +193,20 @@ const translations: Record<Language, Record<string, any>> = {
     'footer.contact.title': 'Get in Touch',
     'footer.send': 'Send Message',
     'footer.rights': 'All rights reserved.',
+    
+    // Contact Form
+    'contact.title': "Let's talk!",
+    'contact.subtitle': 'Fill out the form below and I will get back to you soon.',
+    'contact.success.title': 'Message Sent!',
+    'contact.success.message': "Thanks for reaching out. I'll get back to you soon!",
+    'contact.name.label': 'Name',
+    'contact.name.placeholder': 'Your full name',
+    'contact.email.label': 'Email',
+    'contact.email.placeholder': 'your@email.com',
+    'contact.message.label': 'Message',
+    'contact.message.placeholder': 'Type your message here...',
+    'contact.button.send': 'Send Message',
+    'contact.button.sending': 'Sending...',
   },
   pt: {
     // Header
@@ -132,6 +214,7 @@ const translations: Record<Language, Record<string, any>> = {
     'nav.cases': 'Casos de Estudo',
     'nav.projects': 'Projetos',
     'nav.contact': 'Contato',
+    'nav.all': 'TODOS',
     
     // Hero
     'hero.available': 'Disponível para novos projetos',
@@ -214,12 +297,79 @@ const translations: Record<Language, Record<string, any>> = {
     'cases.problem': 'Problema',
     'cases.solution': 'Solução',
     'cases.results': 'Resultados',
+    'cases.items': [
+      {
+        title: 'BOT de Relatórios WhatsApp',
+        client: 'ONDACOM',
+        problem: 'A equipe operacional carecia de informações para tomada de decisão e gastava muito tempo gerando relatórios manualmente, o que era demorado e propenso a erros.',
+        solution: 'Construído um BOT de automação personalizado integrado ao WhatsApp, fornecendo as informações necessárias para decisões de forma clara e concisa.',
+        results: [
+          'Redução de 80% no trabalho manual, tomada de decisão rápida',
+          'Geração de relatórios 3x mais rápida',
+          'Equipe livre para atividades operacionais, gestão de equipe e clientes e decisões estratégicas',
+        ],
+        tech: ['Python', 'WhatsApp API'],
+      },
+      {
+        title: 'Dashboard Interno & Analytics',
+        client: 'I-SYSTEMS',
+        problem: 'Sem visão centralizada das métricas principais. A equipe gastava horas compilando relatórios de diferentes fontes.',
+        solution: 'Desenvolvido um dashboard de analytics em tempo real agregando dados de múltiplas fontes com visualizações personalizadas.',
+        results: [
+          'Insights de negócio em tempo real',
+          'Relatórios 90% mais rápidos',
+          'Melhores decisões baseadas em dados',
+        ],
+        tech: ['React', 'TypeScript', 'Python','MySQL'],
+      },
+    ],
     
     // Projects
     'projects.title': 'PROJETOS.',
     'projects.filters': 'FILTROS:',
     'projects.search': 'Buscar por nome, linguagem ou tecnologias...',
     'projects.notfound': 'Nenhum projeto encontrado com esses filtros.',
+    'projects.clear': 'Limpar',
+    'projects.count.singular': 'projeto',
+    'projects.count.plural': 'projetos',
+    'projects.items': [
+      {
+        id: 1,
+        title: 'Zapflow',
+        description: 'Plataforma de automação de atendimento via WhatsApp com arquitetura multi-tenant.',
+        emoji: '🛍️',
+        accent: '#f59e0b',
+        tech: ['NextJS', 'TypeScript', 'TailwindCSS', 'PostgreSQL', 'Redis', 'Docker', 'NestJS'],
+        category: 'FULLSTACK',
+        url: 'https://beta.jmtechsolutions.com.br/',
+        github: '',
+        year: '2026',
+      },
+      {
+        id: 2,
+        title: 'JM Tech Solutions',
+        description: 'Landing page da empresa JM Tech Solutions.',
+        emoji: '🎨',
+        accent: '#10b981',
+        tech: ['HTML', 'CSS', 'JavaScript', 'TailwindCSS'],
+        category: 'FRONTEND',
+        url: 'https://dev.jmtechsolutions.com.br/',
+        github: 'https://github.com/jumaelmartins/jm-techolutions',
+        year: '2026',
+      },
+      {
+        id: 3,
+        title: 'Portifolio Manager',
+        description: 'Um CMS open source para gerenciar projetos, experiências, cursos e formações acadêmicas de forma simples e centralizada. A ideia é disponibilizar uma API para ser consumida em portfólios pessoais ou sites, facilitando a manutenção do conteúdo sem precisar alterar diretamente o frontend.',
+        emoji: '⚙️',
+        accent: '#6366f1',
+        tech: ['Node', 'NestJS', 'PostgreSQL'],
+        category: 'BACKEND',
+        url: '-',
+        github: 'https://github.com/jumaelmartins/portifolio_manager',
+        year: '2025',
+      },
+    ],
     
     // Final CTA
     'cta.title1': 'Vamos construir algo',
@@ -236,6 +386,20 @@ const translations: Record<Language, Record<string, any>> = {
     'footer.contact.title': 'Entre em Contato',
     'footer.send': 'Enviar Mensagem',
     'footer.rights': 'Todos os direitos reservados.',
+
+    // Contact Form
+    'contact.title': 'Vamos conversar!',
+    'contact.subtitle': 'Preencha o formulário abaixo e entrarei em contato em breve.',
+    'contact.success.title': 'Mensagem Enviada!',
+    'contact.success.message': 'Obrigado pelo contato. Responderei em breve!',
+    'contact.name.label': 'Nome',
+    'contact.name.placeholder': 'Seu nome completo',
+    'contact.email.label': 'E-mail',
+    'contact.email.placeholder': 'seu@email.com',
+    'contact.message.label': 'Mensagem',
+    'contact.message.placeholder': 'Digite sua mensagem aqui...',
+    'contact.button.send': 'Enviar Mensagem',
+    'contact.button.sending': 'Enviando...',
   }
 };
 
@@ -276,7 +440,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
     handleSetTheme(newTheme);
   };
 
-  const t = (key: string): string => {
+  const t = (key: string): any => {
     return translations[language][key] || key;
   };
 

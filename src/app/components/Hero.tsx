@@ -1,6 +1,6 @@
 import { Calendar } from 'lucide-react';
 import { motion } from 'motion/react';
-import profileImg from '../../assets/5e190d05381ea69c600d531b493ff0584c16b45c.png';
+import profileImg from '../../assets/FotoNova2.png';
 import { useApp } from '../context/AppContext';
 
 export function Hero() {
@@ -152,13 +152,13 @@ export function Hero() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <div className="relative w-64 h-64 md:w-80 md:h-80">
+            <div className="relative w-72 sm:w-80 md:w-[26rem] aspect-[3/2]">
               <motion.div
-                className="absolute -inset-4 bg-gradient-to-r from-blue-400 to-blue-600 rounded-full blur-2xl opacity-15 dark:opacity-20"
-                animate={{ scale: [1, 1.1, 1] }}
+                className="absolute -inset-4 bg-gradient-to-r from-blue-400 to-blue-600 rounded-3xl blur-2xl opacity-15 dark:opacity-20"
+                animate={{ scale: [1, 1.05, 1] }}
                 transition={{ duration: 4, repeat: Infinity }}
               />
-              <div className="relative w-full h-full rounded-full overflow-hidden border-[6px] border-white dark:border-[#131726] shadow-2xl shadow-blue-500/10">
+              <div className="relative w-full h-full rounded-3xl overflow-hidden border-[6px] border-white dark:border-[#131726] shadow-2xl shadow-blue-500/10">
                 <img
                   src={profileImg}
                   alt="Jumael Martins"

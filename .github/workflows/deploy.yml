@@ -23,6 +23,10 @@ jobs:
 
       - name: Build Project
         run: npm run build
+        env:
+          VITE_PM_API_KEY: ${{ secrets.VITE_PM_API_KEY }}
+          VITE_PM_API_URL: ${{ vars.VITE_PM_API_URL }}
+          VITE_PM_IMAGE_BASE: ${{ vars.VITE_PM_IMAGE_BASE }}
 
       - name: Deploy to VPS
         uses: appleboy/scp-action@v0.1.7

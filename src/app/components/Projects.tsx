@@ -2,6 +2,7 @@ import { useState, useMemo, useRef } from 'react';
 import { ExternalLink, Github, X } from 'lucide-react';
 import { motion, AnimatePresence, useMotionValue, useTransform, useSpring } from 'motion/react';
 import { useApp } from '../context/AppContext';
+import { useProjects } from '../hooks/useProjects';
 
 /* ─── 3D Tilt Project Card ──────────────────────────────────────────── */
 function ProjectCard({ project, index }: { project: any; index: number }) {
@@ -120,30 +121,34 @@ function ProjectCard({ project, index }: { project: any; index: number }) {
 
           {/* Action buttons */}
           <div className="flex items-center gap-2">
-            <motion.a
-              href={project.github}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs font-mono px-3 py-1.5 rounded-lg border text-gray-500 dark:text-[#6b7fa3] transition-all"
-              style={{ borderColor: 'var(--ds-border)', background: 'var(--ds-surface)' }}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.96 }}
-            >
-              <Github size={13} />
-              Code
-            </motion.a>
-            <motion.a
-              href={project.url}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex items-center gap-1.5 text-xs font-mono font-bold px-3 py-1.5 rounded-lg transition-all"
-              style={{ background: project.accent, color: '#000' }}
-              whileHover={{ scale: 1.07, opacity: 0.9 }}
-              whileTap={{ scale: 0.96 }}
-            >
-              <ExternalLink size={13} />
-              Live
-            </motion.a>
+            {project.github && (
+              <motion.a
+                href={project.github}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-xs font-mono px-3 py-1.5 rounded-lg border text-gray-500 dark:text-[#6b7fa3] transition-all"
+                style={{ borderColor: 'var(--ds-border)', background: 'var(--ds-surface)' }}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.96 }}
+              >
+                <Github size={13} />
+                Code
+              </motion.a>
+            )}
+            {project.url && (
+              <motion.a
+                href={project.url}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-xs font-mono font-bold px-3 py-1.5 rounded-lg transition-all"
+                style={{ background: project.accent, color: '#000' }}
+                whileHover={{ scale: 1.07, opacity: 0.9 }}
+                whileTap={{ scale: 0.96 }}
+              >
+                <ExternalLink size={13} />
+                Live
+              </motion.a>
+            )}
           </div>
         </div>
       </div>
@@ -154,7 +159,7 @@ function ProjectCard({ project, index }: { project: any; index: number }) {
 /* ─── Main section ──────────────────────────────────────────────────── */
 export function Projects() {
   const { t } = useApp();
-  const allProjects = useMemo(() => t('projects.items') || [], [t]);
+  const { projects: allProjects, loading, error } = useProjects();
   const [selectedFilters, setSelectedFilters] = useState<string[]>(['TODOS']);
   const [searchQuery, setSearchQuery] = useState('');
 
@@ -187,7 +192,7 @@ export function Projects() {
 
       return matchesFilter && matchesSearch;
     });
-  }, [selectedFilters, searchQuery]);
+  }, [allProjects, selectedFilters, searchQuery]);
 
   const toggleFilter = (key: string) => {
     if (key === 'TODOS') {
@@ -337,9 +342,11 @@ export function Projects() {
               )}
             </AnimatePresence>
 
-            <span className="ml-auto font-mono text-xs text-gray-400 dark:text-[#4a5a78]">
-              {filteredProjects.length} {filteredProjects.length === 1 ? t('projects.count.singular') : t('projects.count.plural')}
-            </span>
+            {!loading && !error && (
+              <span className="ml-auto font-mono text-xs text-gray-400 dark:text-[#4a5a78]">
+                {filteredProjects.length} {filteredProjects.length === 1 ? t('projects.count.singular') : t('projects.count.plural')}
+              </span>
+            )}
           </div>
         </motion.div>
 
@@ -349,7 +356,37 @@ export function Projects() {
           style={{ perspective: '1200px' }}
         >
           <AnimatePresence mode="wait">
-            {filteredProjects.length > 0 ? (
+            {loading ? (
+              Array.from({ length: 6 }).map((_, i) => (
+                <div
+                  key={`skeleton-${i}`}
+                  className="h-full rounded-2xl overflow-hidden border animate-pulse"
+                  style={{ background: 'var(--ds-surface-alt)', borderColor: 'var(--ds-border)' }}
+                >
+                  <div className="h-40" style={{ background: 'var(--ds-surface)' }} />
+                  <div className="p-5 space-y-3">
+                    <div className="h-5 w-2/3 rounded" style={{ background: 'var(--ds-surface)' }} />
+                    <div className="h-4 w-full rounded" style={{ background: 'var(--ds-surface)' }} />
+                    <div className="h-4 w-4/5 rounded" style={{ background: 'var(--ds-surface)' }} />
+                    <div className="flex gap-1.5 pt-2">
+                      <div className="h-5 w-14 rounded" style={{ background: 'var(--ds-surface)' }} />
+                      <div className="h-5 w-14 rounded" style={{ background: 'var(--ds-surface)' }} />
+                    </div>
+                  </div>
+                </div>
+              ))
+            ) : error ? (
+              <motion.div
+                key="error"
+                className="col-span-full flex flex-col items-center justify-center py-24 text-center"
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+              >
+                <div className="text-5xl mb-4 opacity-30">⚠️</div>
+                <p className="text-sm text-gray-400 dark:text-[#4a5a78]">{t('projects.error')}</p>
+              </motion.div>
+            ) : filteredProjects.length > 0 ? (
               filteredProjects.map((project, index) => (
                 <ProjectCard key={project.id} project={project} index={index} />
               ))

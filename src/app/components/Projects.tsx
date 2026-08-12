@@ -9,6 +9,8 @@ function ProjectCard({ project, index }: { project: any; index: number }) {
   const ref = useRef<HTMLDivElement>(null);
   const x = useMotionValue(0);
   const y = useMotionValue(0);
+  const [imgError, setImgError] = useState(false);
+  const showImage = Boolean(project.image) && !imgError;
 
   const rotateX = useSpring(useTransform(y, [-0.5, 0.5], [7, -7]), { stiffness: 300, damping: 30 });
   const rotateY = useSpring(useTransform(x, [-0.5, 0.5], [-7, 7]), { stiffness: 300, damping: 30 });
@@ -53,41 +55,58 @@ function ProjectCard({ project, index }: { project: any; index: number }) {
           (e.currentTarget as HTMLElement).style.boxShadow = 'none';
         }}
       >
-        {/* Header — emoji + blurred accent blob */}
+        {/* Header — project image, or emoji + blurred accent blob as fallback */}
         <div
           className="relative h-40 flex items-center justify-center overflow-hidden"
           style={{ background: `${project.accent}12` }}
         >
-          {/* Blurred blob */}
-          <div
-            className="absolute inset-0 opacity-30 blur-3xl scale-150"
-            style={{ background: `radial-gradient(circle, ${project.accent}, transparent 70%)` }}
-          />
-          {/* Subtle grid */}
-          <div
-            className="absolute inset-0 opacity-[0.04]"
-            style={{
-              backgroundImage: `linear-gradient(${project.accent}88 1px, transparent 1px), linear-gradient(90deg, ${project.accent}88 1px, transparent 1px)`,
-              backgroundSize: '24px 24px',
-            }}
-          />
-          {/* Emoji */}
-          <motion.div
-            className="relative z-10 text-6xl select-none"
-            whileHover={{ scale: 1.15 }}
-          >
-            {project.emoji}
-          </motion.div>
+          {showImage ? (
+            <>
+              {/* Project photo */}
+              <img
+                src={project.image}
+                alt={project.title}
+                loading="lazy"
+                onError={() => setImgError(true)}
+                className="absolute inset-0 w-full h-full object-cover"
+              />
+              {/* Gradient for badge legibility */}
+              <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-black/20" />
+            </>
+          ) : (
+            <>
+              {/* Blurred blob */}
+              <div
+                className="absolute inset-0 opacity-30 blur-3xl scale-150"
+                style={{ background: `radial-gradient(circle, ${project.accent}, transparent 70%)` }}
+              />
+              {/* Subtle grid */}
+              <div
+                className="absolute inset-0 opacity-[0.04]"
+                style={{
+                  backgroundImage: `linear-gradient(${project.accent}88 1px, transparent 1px), linear-gradient(90deg, ${project.accent}88 1px, transparent 1px)`,
+                  backgroundSize: '24px 24px',
+                }}
+              />
+              {/* Emoji */}
+              <motion.div
+                className="relative z-10 text-6xl select-none"
+                whileHover={{ scale: 1.15 }}
+              >
+                {project.emoji}
+              </motion.div>
+            </>
+          )}
           {/* Year */}
           <div
-            className="absolute top-3 right-3 text-[10px] font-mono px-2 py-0.5 rounded-full border"
+            className="absolute top-3 right-3 z-20 text-[10px] font-mono px-2 py-0.5 rounded-full border backdrop-blur-sm"
             style={{ color: project.accent, borderColor: `${project.accent}50`, background: `${project.accent}12` }}
           >
             {project.year}
           </div>
           {/* Category */}
           <div
-            className="absolute bottom-3 left-3 text-[10px] font-mono tracking-widest px-2 py-0.5 rounded-sm font-bold"
+            className="absolute bottom-3 left-3 z-20 text-[10px] font-mono tracking-widest px-2 py-0.5 rounded-sm font-bold"
             style={{ background: project.accent, color: '#000' }}
           >
             {project.category}

@@ -8,6 +8,16 @@ import {
 
 const API_URL = import.meta.env.VITE_PM_API_URL;
 const API_KEY = import.meta.env.VITE_PM_API_KEY;
+const IMAGE_BASE = import.meta.env.VITE_PM_IMAGE_BASE;
+
+/** Builds a public image URL from the API's relative src_path. */
+function resolveImage(srcPath?: string | null): string {
+  if (!srcPath) return '';
+  if (/^https?:\/\//i.test(srcPath)) return srcPath;
+  const base = (IMAGE_BASE || '').replace(/\/+$/, '');
+  const path = srcPath.replace(/^\/+/, '');
+  return base ? `${base}/${path}` : `/${path}`;
+}
 
 /** Shape consumed by <ProjectCard> — derived from the API's f_projects. */
 export interface UiProject {
@@ -16,6 +26,7 @@ export interface UiProject {
   description: string;
   emoji: string;
   accent: string;
+  image: string;
   tech: string[];
   category: string;
   url: string;
@@ -32,6 +43,7 @@ interface ApiProject {
   live_url: string | null;
   category?: { category?: string } | null;
   technologies?: { tech: string }[] | null;
+  f_images?: { id: number; src_path: string } | null;
   created_at?: string;
 }
 
@@ -86,6 +98,7 @@ export function useProjects() {
         description: overlay || p.description || '',
         emoji: categoryEmoji[category] || categoryEmoji.DEFAULT,
         accent: categoryAccent[category] || categoryAccent.DEFAULT,
+        image: resolveImage(p.f_images?.src_path),
         tech: Array.isArray(p.technologies) ? p.technologies.map((t) => t.tech) : [],
         category,
         url: p.live_url || '',

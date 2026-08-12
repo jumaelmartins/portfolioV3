@@ -9,8 +9,8 @@ export function FloatingWhatsApp() {
     <motion.a
       href={whatsappUrl}
       target="_blank"
-      rel="noopener noreferrer"
-      className="fixed bottom-6 right-6 md:bottom-8 md:right-8 z-40 flex items-center justify-center w-14 h-14 md:w-16 md:h-16 bg-[#25D366] text-white rounded-full shadow-[0_8px_30px_rgb(37,211,102,0.4)] hover:bg-[#20bd5a] hover:shadow-[0_8px_30px_rgb(37,211,102,0.6)] transition-all duration-300"
+      rel="noreferrer"
+      className="fixed bottom-6 left-6 md:bottom-8 md:left-8 z-40 flex items-center justify-center w-14 h-14 md:w-16 md:h-16 bg-[#25D366] text-white rounded-full shadow-[0_8px_30px_rgb(37,211,102,0.4)] hover:bg-[#20bd5a] hover:shadow-[0_8px_30px_rgb(37,211,102,0.6)] transition-all duration-300"
       whileHover={{ scale: 1.05 }}
       whileTap={{ scale: 0.95 }}
       initial={{ opacity: 0, y: 50, scale: 0.8 }}

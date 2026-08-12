@@ -6,9 +6,14 @@ import {
   categoryAccent,
 } from '../data/projectDescriptions';
 
-const API_URL = import.meta.env.VITE_PM_API_URL;
-const API_KEY = import.meta.env.VITE_PM_API_KEY;
-const IMAGE_BASE = import.meta.env.VITE_PM_IMAGE_BASE;
+// Public defaults so the site works even when the build env has no VITE_PM_*
+// vars (e.g. CI). The pk_ key is a publishable key — it already ships in the
+// client bundle — and .env still overrides these locally.
+const API_URL = import.meta.env.VITE_PM_API_URL || 'https://pm.jumadev.com';
+const API_KEY =
+  import.meta.env.VITE_PM_API_KEY ||
+  'pk_fbd47150bd1e97a3d7e701da08bf56e4f14111026994584e';
+const IMAGE_BASE = import.meta.env.VITE_PM_IMAGE_BASE || 'https://pm.jumadev.com';
 
 /** Builds a public image URL from the API's relative src_path. */
 function resolveImage(srcPath?: string | null): string {

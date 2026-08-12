@@ -1,7 +1,7 @@
 import { motion } from 'motion/react';
 
 export function FloatingWhatsApp() {
-  const phoneNumber = "5571996040206";
+  const phoneNumber = "5571999910206";
   const defaultMessage = encodeURIComponent("Olá, vim pelo seu portfólio! Gostaria de conversar sobre um projeto.");
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${defaultMessage}`;
 

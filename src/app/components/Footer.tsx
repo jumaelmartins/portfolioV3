@@ -37,8 +37,8 @@ export function Footer() {
               </p>
               <div className="flex gap-2">
                 {[
-                  { href: 'https://github.com/jumael-martins', Icon: Github },
-                  { href: 'https://linkedin.com/in/jumael-martins', Icon: Linkedin },
+                  { href: 'https://github.com/jumaelmartins', Icon: Github },
+                  { href: 'https://linkedin.com/in/jumael-martins-nodejs', Icon: Linkedin },
                 ].map(({ href, Icon }) => (
                   <motion.a
                     key={href}

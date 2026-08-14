@@ -134,7 +134,7 @@ export function Header() {
             </motion.button>
 
             <motion.a
-              href="https://github.com/jumael-martins"
+              href="https://github.com/jumaelmartins"
               target="_blank"
               rel="noopener noreferrer"
               className="hidden sm:flex w-9 h-9 items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/8 transition-colors"
@@ -145,7 +145,7 @@ export function Header() {
             </motion.a>
 
             <motion.a
-              href="https://linkedin.com/in/jumael-martins"
+              href="https://linkedin.com/in/jumael-martins-nodejs"
               target="_blank"
               rel="noopener noreferrer"
               className="hidden sm:flex w-9 h-9 items-center justify-center rounded-full text-gray-500 dark:text-gray-400 hover:bg-black/5 dark:hover:bg-white/8 transition-colors"

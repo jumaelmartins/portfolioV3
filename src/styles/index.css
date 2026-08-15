@@ -1,3 +1,4 @@
-@import './fonts.css';
+/* Tailwind (Preflight reset + any utilities used by leftover ui/ components).
+   Fonts are loaded via <link> in index.html. */
 @import './tailwind.css';
 @import './theme.css';

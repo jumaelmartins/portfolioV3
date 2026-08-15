@@ -1,172 +1,265 @@
-import { Calendar } from 'lucide-react';
-import { motion } from 'motion/react';
-import profileImg from '../../assets/FotoNova2.png';
+import { CSSProperties } from 'react';
 import { useApp } from '../context/AppContext';
+import { Hoverable } from './primitives';
+import { Globe } from './Globe';
+
+const MONO = "'JetBrains Mono', monospace";
+const DISPLAY = "'Familjen Grotesk', sans-serif";
+
+const maskLine: CSSProperties = { display: 'block', overflow: 'hidden', paddingBottom: '2px' };
+const codeRow: CSSProperties = {};
+const statCard: CSSProperties = {
+  border: '1px solid rgba(255,255,255,0.09)',
+  borderRadius: '18px',
+  padding: '20px',
+  background: 'rgba(18,19,26,0.7)',
+};
+const statNum: CSSProperties = {
+  fontFamily: DISPLAY,
+  fontSize: '38px',
+  fontWeight: 600,
+  letterSpacing: '-0.04em',
+};
+const statLabel: CSSProperties = {
+  fontFamily: MONO,
+  fontSize: '11px',
+  letterSpacing: '0.08em',
+  textTransform: 'uppercase',
+  color: '#8B8D9B',
+  marginTop: '6px',
+};
 
 export function Hero() {
   const { t } = useApp();
 
-  const handleContact = () => {
-    const element = document.getElementById('contato');
-    element?.scrollIntoView({ behavior: 'smooth' });
-  };
-
   return (
     <section
-      id="inicio"
-      className="min-h-screen flex items-center justify-center pt-20 pb-16 px-6 overflow-hidden transition-colors"
-      style={{ background: 'var(--ds-bg)' }}
+      id="top"
+      style={{
+        position: 'relative',
+        zIndex: 1,
+        maxWidth: '1240px',
+        margin: '0 auto',
+        padding: 'clamp(126px,17vw,186px) clamp(20px,4vw,28px) 96px',
+        display: 'flex',
+        flexWrap: 'wrap',
+        gap: '56px',
+        alignItems: 'flex-end',
+        minHeight: '100vh',
+        overflow: 'hidden',
+      }}
     >
-      {/* Subtle background mesh */}
-      <div className="pointer-events-none h-full absolute inset-0 overflow-hidden">
-        <div className="absolute -top-40 -right-40 w-[600px] h-[600px] rounded-full opacity-[0.07] blur-[100px] bg-blue-500" />
-        <div className="absolute bottom-10 -left-20 w-[400px] h-[400px] rounded-full opacity-[0.05] blur-[80px] bg-blue-600" />
+      <Globe
+        style={{
+          position: 'absolute',
+          top: '14%',
+          right: '-4%',
+          width: 'min(600px,68vw)',
+          aspectRatio: '1',
+          pointerEvents: 'none',
+          opacity: 0.5,
+          zIndex: 0,
+        }}
+      />
 
-        {/* Subtle animated wave at bottom */}
-        <svg
-          className="absolute left-0 w-full h-full md:hfull"
-          viewBox="0 0 1440 120"
-          preserveAspectRatio="none"
-          fill="none"
+      <div style={{ position: 'relative', zIndex: 1, flex: '1 1 440px', minWidth: 0 }}>
+        <div
+          style={{
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '10px',
+            padding: '8px 14px',
+            border: '1px solid rgba(139,124,246,0.34)',
+            borderRadius: '999px',
+            background: 'rgba(139,124,246,0.10)',
+            animation: 'riseSoft .8s cubic-bezier(.2,.8,.2,1) both',
+          }}
         >
-          <motion.path
-            d="M0,80 C240,40 480,100 720,70 C960,40 1200,90 1440,60 L1440,120 L0,120 Z"
-            fill="currentColor"
-            // fill="#333"
-            className="text-blue-400/[0.04] dark:text-blue-400/[0.06]"
-            animate={{
-              d: [
-                "M0,80 C240,40 480,100 720,70 C960,40 1200,90 1440,60 L1440,120 L0,120 Z",
-                "M0,60 C240,90 480,50 720,85 C960,55 1200,40 1440,75 L1440,120 L0,120 Z",
-                "M0,80 C240,40 480,100 720,70 C960,40 1200,90 1440,60 L1440,120 L0,120 Z",
-              ],
+          <span
+            style={{
+              width: '6px',
+              height: '6px',
+              borderRadius: '50%',
+              background: '#7CF6B0',
+              boxShadow: '0 0 12px #7CF6B0',
+              animation: 'blink 1.8s steps(1,end) infinite',
             }}
-            transition={{ duration: 8, repeat: Infinity, ease: "easeInOut" }}
           />
-          <motion.path
-            d="M0,90 C300,60 600,110 900,75 C1100,55 1300,95 1440,70 L1440,120 L0,120 Z"
-            fill="currentColor"
-            className="text-blue-500/[0.03] dark:text-blue-500/[0.04]"
-            animate={{
-              d: [
-                "M0,90 C300,60 600,110 900,75 C1100,55 1300,95 1440,70 L1440,120 L0,120 Z",
-                "M0,70 C300,100 600,55 900,90 C1100,65 1300,50 1440,85 L1440,120 L0,120 Z",
-                "M0,90 C300,60 600,110 900,75 C1100,55 1300,95 1440,70 L1440,120 L0,120 Z",
-              ],
+          <span
+            style={{
+              fontFamily: MONO,
+              fontSize: '11.5px',
+              letterSpacing: '0.1em',
+              textTransform: 'uppercase',
+              color: '#C4BBFB',
             }}
-            transition={{ duration: 10, repeat: Infinity, ease: "easeInOut", delay: 1 }}
-          />
-        </svg>
+          >
+            {t('hero.badge')}
+          </span>
+        </div>
+
+        <h1
+          style={{
+            fontFamily: DISPLAY,
+            fontWeight: 600,
+            fontSize: 'clamp(52px,7.4vw,108px)',
+            lineHeight: 0.94,
+            letterSpacing: '-0.045em',
+            margin: '30px 0 0',
+            textWrap: 'balance',
+          }}
+        >
+          <span style={maskLine}>
+            <span style={{ display: 'block', animation: 'unmask 1s cubic-bezier(.16,1,.3,1) .05s both' }}>
+              {t('hero.title1')}
+            </span>
+          </span>
+          <span style={maskLine}>
+            <span style={{ display: 'block', animation: 'unmask 1s cubic-bezier(.16,1,.3,1) .16s both' }}>
+              {t('hero.title2')}
+            </span>
+          </span>
+          <span style={{ ...maskLine, paddingBottom: '8px' }}>
+            <span
+              style={{
+                display: 'block',
+                color: '#8B7CF6',
+                fontStyle: 'italic',
+                animation: 'unmask 1s cubic-bezier(.16,1,.3,1) .27s both',
+              }}
+            >
+              {t('hero.title3')}
+            </span>
+          </span>
+        </h1>
+
+        <p
+          style={{
+            maxWidth: '60ch',
+            fontSize: '19px',
+            lineHeight: 1.62,
+            color: '#9EA0AE',
+            margin: '26px 0 0',
+            animation: 'riseSoft .9s cubic-bezier(.2,.8,.2,1) .5s both',
+            textWrap: 'pretty',
+          }}
+        >
+          {t('hero.subtitle')}
+        </p>
+
+        <div
+          style={{
+            display: 'flex',
+            flexWrap: 'wrap',
+            gap: '14px',
+            marginTop: '38px',
+            animation: 'riseSoft .9s cubic-bezier(.2,.8,.2,1) .62s both',
+          }}
+        >
+          <Hoverable
+            as="a"
+            href="#contato"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '10px',
+              background: '#8B7CF6',
+              color: '#0A0A0D',
+              fontWeight: 600,
+              fontSize: '15px',
+              padding: '16px 26px',
+              borderRadius: '999px',
+              transition: 'transform .3s cubic-bezier(.2,.8,.2,1), box-shadow .3s',
+            }}
+            hoverStyle={{ transform: 'translateY(-3px)', boxShadow: '0 18px 44px rgba(139,124,246,0.42)' }}
+          >
+            {t('hero.cta1')}
+          </Hoverable>
+          <Hoverable
+            as="a"
+            href="#projetos"
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '10px',
+              borderWidth: '1px',
+              borderStyle: 'solid',
+              borderColor: 'rgba(255,255,255,0.16)',
+              color: '#F2F1EE',
+              fontWeight: 600,
+              fontSize: '15px',
+              padding: '16px 26px',
+              borderRadius: '999px',
+              transition: 'border-color .3s, transform .3s',
+            }}
+            hoverStyle={{ borderColor: '#8B7CF6', transform: 'translateY(-3px)' }}
+          >
+            {t('hero.cta2')}
+          </Hoverable>
+        </div>
       </div>
 
-      <div className="container mx-auto max-w-6xl relative">
-        <div className="flex flex-col md:flex-row items-center justify-between gap-12">
-          {/* Left content */}
-          <motion.div
-            className="flex-1 max-w-2xl"
-            initial={{ opacity: 0, x: -50 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.6 }}
-          >
-            {/* Available badge */}
-            <motion.div
-              className="inline-flex items-center gap-2 px-4 py-2 rounded-full mb-6 border"
-              style={{
-                background: 'var(--ds-accent-subtle)',
-                borderColor: 'rgba(37,99,235,0.18)',
-              }}
-              initial={{ opacity: 0, y: -10 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ delay: 0.2 }}
-            >
-              <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
-              <span className="text-sm font-semibold text-blue-600 dark:text-blue-400">
-                {t('hero.available')}
-              </span>
-            </motion.div>
+      <div
+        style={{
+          position: 'relative',
+          zIndex: 1,
+          flex: '1 1 300px',
+          minWidth: 0,
+          display: 'flex',
+          flexDirection: 'column',
+          gap: '18px',
+          animation: 'blurIn 1.2s cubic-bezier(.16,1,.3,1) .4s both',
+        }}
+      >
+        <div
+          style={{
+            border: '1px solid rgba(255,255,255,0.09)',
+            borderRadius: '18px',
+            background: 'linear-gradient(180deg,rgba(23,25,34,0.9),rgba(18,19,26,0.9))',
+            padding: '22px',
+            fontFamily: MONO,
+            fontSize: '12.5px',
+            lineHeight: 2,
+            color: '#8B8D9B',
+          }}
+        >
+          <div style={{ display: 'flex', gap: '6px', marginBottom: '14px' }}>
+            {[0, 1, 2].map((i) => (
+              <span key={i} style={{ width: '9px', height: '9px', borderRadius: '50%', background: 'rgba(255,255,255,0.14)' }} />
+            ))}
+          </div>
+          <div style={codeRow}>
+            <span style={{ color: '#8B7CF6' }}>role</span> = "Full Stack Engineer"
+          </div>
+          <div style={codeRow}>
+            <span style={{ color: '#8B7CF6' }}>stack</span> = ["Node", "TS", "React", "Python"]
+          </div>
+          <div style={codeRow}>
+            <span style={{ color: '#8B7CF6' }}>focus</span> = "{t('hero.focus')}"
+          </div>
+          <div style={codeRow}>
+            <span style={{ color: '#8B7CF6' }}>base</span> = "{t('hero.base')}"
+          </div>
+          <div style={{ color: '#7CF6B0' }}>
+            status = ready<span style={{ animation: 'blink 1.1s steps(1,end) infinite' }}>_</span>
+          </div>
+        </div>
 
-            {/* Headline */}
-            <h1 className="text-5xl md:text-6xl lg:text-7xl mb-6 leading-[1.08] tracking-tight text-gray-900 dark:text-white font-bold">
-              {t('hero.title1')}{' '}
-              <span className="text-blue-600 dark:text-blue-400">{t('hero.title2')}</span>
-              <br />
-              {t('hero.title3')}
-            </h1>
-
-            <p className="text-xl text-gray-500 dark:text-[#6b7fa3] mb-4 leading-relaxed">
-              {t('hero.subtitle')}
-            </p>
-
-            <p className="text-lg text-gray-400 dark:text-[#4a5a78] mb-10">
-              {t('hero.description')}
-            </p>
-
-            {/* CTAs */}
-            <div className="flex flex-wrap gap-4 mb-10">
-              <motion.button
-                onClick={handleContact}
-                className="bg-blue-600 text-white px-8 py-4 rounded-full hover:bg-blue-700 transition-all flex items-center gap-2 shadow-lg shadow-blue-500/20 font-semibold text-sm"
-                whileHover={{ scale: 1.04, y: -1 }}
-                whileTap={{ scale: 0.96 }}
-              >
-                <Calendar size={18} />
-                {t('hero.cta1')}
-              </motion.button>
-
-              <motion.button
-                onClick={handleContact}
-                className="bg-white dark:bg-white/5 text-gray-700 dark:text-gray-300 border border-black/[0.10] dark:border-white/[0.10] px-8 py-4 rounded-full hover:border-blue-400 dark:hover:border-blue-500 hover:text-blue-600 dark:hover:text-blue-400 transition-all font-semibold text-sm"
-                whileHover={{ scale: 1.04, y: -1 }}
-                whileTap={{ scale: 0.96 }}
-              >
-                {t('hero.cta2')}
-              </motion.button>
-            </div>
-
-            {/* Social proof */}
-            <motion.div
-              className="flex flex-wrap gap-6 text-sm text-gray-500 dark:text-[#6b7fa3]"
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              transition={{ delay: 0.6 }}
-            >
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 rounded-full flex items-center justify-center" style={{ background: 'var(--ds-accent-subtle)' }}>
-                  <span className="text-blue-600 dark:text-blue-400 font-bold text-xs">20+</span>
-                </div>
-                <span>{t('hero.proof1')}</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <div className="w-8 h-8 bg-green-50 dark:bg-green-400/10 rounded-full flex items-center justify-center">
-                  <span className="text-green-600 dark:text-green-400 font-bold text-xs">5+</span>
-                </div>
-                <span>{t('hero.proof2')}</span>
-              </div>
-            </motion.div>
-          </motion.div>
-
-          {/* Right — profile image */}
-          <motion.div
-            className="flex-shrink-0"
-            initial={{ opacity: 0, scale: 0.8 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.2 }}
-          >
-            <div className="relative w-72 sm:w-80 md:w-[26rem] aspect-[3/2]">
-              <motion.div
-                className="absolute -inset-4 bg-gradient-to-r from-blue-400 to-blue-600 rounded-3xl blur-2xl opacity-15 dark:opacity-20"
-                animate={{ scale: [1, 1.05, 1] }}
-                transition={{ duration: 4, repeat: Infinity }}
-              />
-              <div className="relative w-full h-full rounded-3xl overflow-hidden border-[6px] border-white dark:border-[#131726] shadow-2xl shadow-blue-500/10">
-                <img
-                  src={profileImg}
-                  alt="Jumael Martins"
-                  className="w-full h-full object-cover"
-                />
-              </div>
-            </div>
-          </motion.div>
+        <div
+          style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(auto-fit,minmax(min(140px,100%),1fr))',
+            gap: '18px',
+          }}
+        >
+          <div style={statCard}>
+            <div style={statNum}>20+</div>
+            <div style={statLabel}>{t('hero.stat1')}</div>
+          </div>
+          <div style={statCard}>
+            <div style={statNum}>+3</div>
+            <div style={statLabel}>{t('hero.stat2')}</div>
+          </div>
         </div>
       </div>
     </section>

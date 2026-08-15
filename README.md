@@ -1,63 +1,78 @@
 # Portfolio V3
 
-Portfólio pessoal single-page de desenvolvedor full-stack. Landing page focada em conversão, com seções de serviços, casos de estudo, projetos e contato. Bilíngue (Português / Inglês) e com tema claro/escuro.
+Portfólio pessoal single-page de engenheiro full-stack. Redesign "ink + violet":
+tema escuro, tipografia Familjen Grotesk / JetBrains Mono, animações scroll-driven,
+globo em canvas e marquee de stack. Bilíngue (Português / Inglês).
 
 ## ✨ Funcionalidades
 
-- **Bilíngue (PT / EN)** — troca de idioma em tempo real, com preferência salva no `localStorage`.
-- **Tema claro / escuro** — toggle manual, persistido no `localStorage`.
-- **Single-page** — Header, Hero, Problemas, Serviços, Casos de Estudo, Diferenciais, Processo, Tech Stack, Projetos, CTA final e Footer.
-- **Navegação flutuante** — menu flutuante + botão flutuante do WhatsApp.
-- **Filtro de projetos** — busca por nome, linguagem ou tecnologia.
-- **Formulário de contato** e animações de UI.
+- **Bilíngue (PT / EN)** — troca de idioma em tempo real (padrão PT), preferência salva no `localStorage`.
+- **Single-page** — Header, Hero, Marquee de stack, Sobre, Serviços, Projetos, Cases, Blog, Contato e Footer.
+- **Conteúdo dinâmico via CMS** — Projetos e a seção Sobre (Experiência / Formação) vêm da API pública do
+  [portfolio-manager](https://github.com/jumaelmartins/portifolio_manager) (`GET /public/portfolio`), com estados de
+  carregamento / erro / vazio.
+- **Animações** — reveals com `animation-timeline: view()`, headline com máscara, barra de progresso de scroll,
+  carrossel de serviços com scroll-snap e globo animado em `<canvas>`.
+- **SEO** — title/description, canonical, hreflang PT/EN, Open Graph, `theme-color` e JSON-LD `Person` no `index.html`.
 
 ## 🛠️ Stack
 
-| Camada       | Tecnologia                                    |
-| ------------ | --------------------------------------------- |
-| Framework    | React 18                                      |
-| Build        | Vite 6                                         |
-| Linguagem    | TypeScript                                     |
-| Estilo       | Tailwind CSS v4 (`@tailwindcss/vite`)          |
-| Componentes  | Radix UI + shadcn-style (`src/app/components/ui`) |
-| Animação     | Motion                                         |
-| Ícones       | Lucide React, MUI Icons                         |
-| Gráficos     | Recharts                                        |
+| Camada     | Tecnologia                                             |
+| ---------- | ------------------------------------------------------ |
+| Framework  | React 18                                               |
+| Build      | Vite 6                                                 |
+| Linguagem  | TypeScript                                             |
+| Estilo     | CSS global (`src/styles/theme.css`) + estilos inline   |
+| Fontes     | Google Fonts (Familjen Grotesk, Plus Jakarta Sans, JetBrains Mono) |
+| Dados      | `fetch` da API pública do portfolio-manager            |
+
+> As dependências pesadas herdadas do template (Radix UI, MUI, Recharts, Motion, etc.) não são mais usadas pelo
+> redesign e podem ser removidas do `package.json` num passo de limpeza posterior.
 
 ## 🚀 Rodando localmente
 
 Pré-requisito: **Node.js 20+**.
 
 ```bash
-# instalar dependências
 npm install
+npm run dev      # http://localhost:5173
+npm run build    # build de produção em ./dist
+```
 
-# ambiente de desenvolvimento (http://localhost:5173)
-npm run dev
+### Variáveis de ambiente
 
-# build de produção (gera ./dist)
-npm run build
+Copie `.env.example` para `.env`. A chave da API **nunca** fica no código — vem do env (secret do GitHub Actions em CI,
+ou `.env` local):
+
+```
+VITE_PM_API_URL=https://pm.jumadev.com
+VITE_PM_API_KEY=pk_...            # chave pública (x-api-key)
+VITE_PM_IMAGE_BASE=https://pm.jumadev.com
 ```
 
 ## 📁 Estrutura
 
 ```
 src/
-├── main.tsx                  # entry point, monta o React
+├── main.tsx                     # entry point, monta o React
 ├── app/
-│   ├── App.tsx               # composição das seções da página
+│   ├── App.tsx                  # providers + composição das seções
 │   ├── context/
-│   │   └── AppContext.tsx    # idioma, tema e traduções (i18n)
-│   └── components/
-│       ├── Header.tsx, Hero.tsx, Services.tsx, ...  # seções
-│       ├── FloatingNav.tsx, FloatingWhatsApp.tsx
-│       └── ui/               # componentes base (Radix / shadcn)
-└── styles/                   # index.css, tailwind.css, theme.css, fonts.css
+│   │   ├── AppContext.tsx       # idioma + traduções (i18n) do conteúdo estático
+│   │   └── PortfolioContext.tsx # busca única de /public/portfolio (CMS)
+│   ├── hooks/
+│   │   ├── useProjects.ts       # projetos do CMS -> cards
+│   │   └── useResume.ts         # experiência + formação do CMS
+│   ├── data/projectDescriptions.ts  # overlay de descrições traduzidas (por id)
+│   └── components/              # Header, Hero, Globe, About, Services, Projects, ...
+└── styles/                      # index.css, theme.css, tailwind.css
 ```
 
 ### Internacionalização
 
-Todo o conteúdo de texto (e os dados de projetos e casos de estudo) fica em `src/app/context/AppContext.tsx`, no objeto `translations` (`en` / `pt`). Os componentes consomem via hook `useApp()` e a função `t('chave')`. Para adicionar ou editar textos, altere esse arquivo.
+O conteúdo estático (copy da página) fica em `src/app/context/AppContext.tsx`, no objeto `translations` (`pt` / `en`),
+consumido via `useApp()` e `t('chave')`. Já os **dados do CMS** (projetos, experiência, formação) chegam prontos da API;
+descrições de projeto podem ser traduzidas no overlay `projectDescriptions.ts`, indexado pelo `id` da API.
 
 ## 📦 Deploy
 
@@ -67,7 +82,7 @@ Deploy automático via **GitHub Actions** (`.github/workflows/deploy.yml`). A ca
 2. `npm run build`
 3. cópia de `dist/*` para o VPS (`/var/www/portfolio`) via SCP/SSH.
 
-Secrets necessários no repositório: `REMOTE_HOST`, `REMOTE_USER`, `SSH_PRIVATE_KEY`.
+Secrets necessários: `REMOTE_HOST`, `REMOTE_USER`, `SSH_PRIVATE_KEY` e `VITE_PM_API_KEY`.
 
 ## 📝 Licença
 

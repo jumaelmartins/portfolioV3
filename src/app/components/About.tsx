@@ -1,225 +1,150 @@
-import { Plus, Briefcase, GraduationCap } from 'lucide-react';
-import { motion } from 'motion/react';
+import { CSSProperties } from 'react';
+import { useApp } from '../context/AppContext';
+import { useEducation, useExperience, ResumeEntry } from '../hooks/useResume';
+import { SectionKicker } from './SectionKicker';
+import fotoNova from '../../assets/FotoNova2.png';
+
+const MONO = "'JetBrains Mono', monospace";
+const DISPLAY = "'Familjen Grotesk', sans-serif";
+
+const columnLabel: CSSProperties = {
+  fontFamily: MONO,
+  fontSize: '11.5px',
+  letterSpacing: '0.12em',
+  textTransform: 'uppercase',
+  color: '#8B7CF6',
+  marginBottom: '20px',
+};
+const entryTitle: CSSProperties = { fontWeight: 600, fontSize: '15px' };
+const entrySub: CSSProperties = { fontFamily: MONO, fontSize: '12px', color: '#8B8D9B', marginTop: '4px' };
+const note: CSSProperties = { fontFamily: MONO, fontSize: '12px', color: '#8B8D9B' };
+
+function ResumeColumn({
+  label,
+  items,
+  loading,
+  emptyMessage,
+}: {
+  label: string;
+  items: ResumeEntry[];
+  loading: boolean;
+  emptyMessage: string;
+}) {
+  const { t } = useApp();
+  return (
+    <div>
+      <div style={columnLabel}>{label}</div>
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '22px' }}>
+        {loading ? (
+          <div style={note}>{t('about.loading')}</div>
+        ) : items.length === 0 ? (
+          <div style={note}>{emptyMessage}</div>
+        ) : (
+          items.map((item) => (
+            <div key={item.id}>
+              <div style={entryTitle}>{item.title}</div>
+              {item.subtitle && <div style={entrySub}>{item.subtitle}</div>}
+            </div>
+          ))
+        )}
+      </div>
+    </div>
+  );
+}
 
 export function About() {
-  const skills = [
-    { name: 'HTML5', icon: '🌐' },
-    { name: 'CSS3', icon: '🎨' },
-    { name: 'JavaScript', icon: 'JS' },
-    { name: 'Python', icon: '🐍' },
-    { name: 'GitHub', icon: '📦' },
-  ];
-
-  const frameworks = [
-    { name: 'TypeScript', icon: 'TS' },
-    { name: 'Node.js', icon: '⬢' },
-    { name: 'React', icon: '⚛️' },
-  ];
-
-  const experience = [
-    {
-      role: 'DESENVOLVEDOR FULL-STACK',
-      company: 'IRE (4 meses)',
-      period: '04/2023 – PRESENTE',
-      description: ''
-    },
-    {
-      role: 'DESENVOLVEDOR PYTHON',
-      company: 'FREELANCER',
-      period: '12/2022 – (3 meses)',
-      description: ''
-    },
-    {
-      role: 'DESENVOLVEDOR JUNIOR',
-      company: 'ITSOLVERS',
-      period: '05/2022 – 05/2023',
-      description: ''
-    },
-    {
-      role: 'ESTAGIÁRIO ADMINISTRATIVO',
-      company: 'AGREGAR',
-      period: '01/2021 – 02/2022',
-      description: ''
-    }
-  ];
-
-  const education = [
-    {
-      degree: 'Bacharelado em Ciências da Computação',
-      institution: 'UNDB',
-      period: '(2022 – 2025)'
-    },
-    {
-      degree: 'Tecnólogo em Redes de Computadores',
-      institution: 'IFMA',
-      period: '(2019 – 2023)'
-    }
-  ];
+  const { t } = useApp();
+  const experience = useExperience();
+  const education = useEducation();
 
   return (
-    <section id="sobre" className="py-20 px-6 bg-gray-100">
-      <div className="container mx-auto max-w-6xl">
-        <motion.div 
-          className="text-center mb-12"
-          initial={{ opacity: 0, y: -30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="flex items-center justify-center gap-3 mb-8">
-            <motion.div
-              animate={{ rotate: [0, 90, 180, 270, 360] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "linear" }}
-            >
-              <Plus className="text-blue-600" size={40} strokeWidth={3} />
-            </motion.div>
+    <section
+      id="sobre"
+      style={{
+        position: 'relative',
+        zIndex: 1,
+        maxWidth: '1240px',
+        margin: '0 auto',
+        padding: 'clamp(84px,11vw,130px) clamp(20px,4vw,28px)',
+      }}
+    >
+      <SectionKicker label={t('about.kicker')} />
+
+      <div
+        style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(auto-fit,minmax(min(300px,100%),1fr))',
+          gap: 'clamp(40px,5vw,70px)',
+          alignItems: 'start',
+        }}
+      >
+        <div className="rv-blur">
+          <div style={{ position: 'relative', borderRadius: '22px', overflow: 'hidden', border: '1px solid rgba(255,255,255,0.10)' }}>
+            <img
+              src={fotoNova}
+              alt="Jumael Martins, Full Stack Software Engineer"
+              width={900}
+              height={600}
+              loading="lazy"
+              style={{ display: 'block', width: '100%', height: 'auto', filter: 'grayscale(0.25) contrast(1.05)' }}
+            />
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                background: 'linear-gradient(180deg,rgba(10,10,13,0) 45%,rgba(10,10,13,0.75))',
+              }}
+            />
           </div>
-          <h2 className="text-4xl font-bold mb-4">SOBRE.</h2>
-          <p className="text-gray-600 max-w-2xl mx-auto">
-            Lorem ipsum dolor sit amet consectetur adipiscing elit. Maecenas rhoncus lorem sed metus volutpat tempor. 
-            Suspendisse potenti. Quisquam erat mollis augue luctus tristique ullamcorper. Quisquam erat mollis dapibus 
-            nunc egestas finibus.
+          <div style={{ marginTop: '18px', fontFamily: MONO, fontSize: '12px', lineHeight: 1.9, color: '#8B8D9B' }}>
+            <div>Jumael Martins</div>
+            <div>{t('about.role')}</div>
+            <div>{t('about.location')}</div>
+          </div>
+        </div>
+
+        <div>
+          <h2
+            className="rv"
+            style={{
+              fontFamily: DISPLAY,
+              fontWeight: 600,
+              fontSize: 'clamp(32px,3.6vw,52px)',
+              lineHeight: 1.06,
+              letterSpacing: '-0.04em',
+              margin: 0,
+            }}
+          >
+            {t('about.headline')}
+          </h2>
+          <p
+            className="rv"
+            style={{ fontSize: '18px', lineHeight: 1.68, color: '#9EA0AE', margin: '26px 0 0', maxWidth: '62ch', textWrap: 'pretty' }}
+          >
+            {t('about.body')}
           </p>
-        </motion.div>
 
-        <div className="grid md:grid-cols-2 gap-12">
-          {/* Left Column */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(auto-fit,minmax(min(220px,100%),1fr))',
+              gap: '40px 44px',
+              marginTop: '56px',
+            }}
           >
-            {/* Skills */}
-            <div className="mb-8">
-              <h3 className="font-bold text-lg mb-4">HABILIDADES.</h3>
-              <div className="mb-4">
-                <p className="text-sm text-gray-600 mb-3">Já utilizei com maestria</p>
-                <div className="flex flex-wrap gap-3">
-                  {skills.map((skill, index) => (
-                    <motion.div 
-                      key={index} 
-                      className="bg-black text-white px-4 py-2 rounded flex items-center gap-2 text-sm"
-                      initial={{ opacity: 0, scale: 0 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.1 }}
-                      whileHover={{ scale: 1.1 }}
-                    >
-                      <span>{skill.icon}</span>
-                      <span>{skill.name}</span>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-              <div>
-                <p className="text-sm text-gray-600 mb-3">Aprendendo</p>
-                <div className="flex flex-wrap gap-3">
-                  {frameworks.map((framework, index) => (
-                    <motion.div 
-                      key={index} 
-                      className="bg-black text-white px-4 py-2 rounded flex items-center gap-2 text-sm"
-                      initial={{ opacity: 0, scale: 0 }}
-                      whileInView={{ opacity: 1, scale: 1 }}
-                      viewport={{ once: true }}
-                      transition={{ delay: index * 0.1 + 0.5 }}
-                      whileHover={{ scale: 1.1 }}
-                    >
-                      <span>{framework.icon}</span>
-                      <span>{framework.name}</span>
-                    </motion.div>
-                  ))}
-                </div>
-              </div>
-            </div>
-
-            {/* Experience */}
-            <div className="mb-8">
-              <h3 className="font-bold text-lg mb-4">EXPERIÊNCIA PROFISSIONAL.</h3>
-              <div className="space-y-4">
-                {experience.map((exp, index) => (
-                  <motion.div 
-                    key={index} 
-                    className="flex gap-3"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <div className="flex-shrink-0 mt-1">
-                      <Briefcase size={20} className="text-gray-700" />
-                    </div>
-                    <div>
-                      <p className="font-bold text-sm">{exp.role}</p>
-                      <p className="text-sm text-gray-600">{exp.company}</p>
-                      <p className="text-xs text-gray-500">{exp.period}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-
-            {/* Education */}
-            <div>
-              <h3 className="font-bold text-lg mb-4">FORMAÇÃO ACADÊMICA.</h3>
-              <div className="space-y-4">
-                {education.map((edu, index) => (
-                  <motion.div 
-                    key={index} 
-                    className="flex gap-3"
-                    initial={{ opacity: 0, x: -20 }}
-                    whileInView={{ opacity: 1, x: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: index * 0.1 }}
-                  >
-                    <div className="flex-shrink-0 mt-1">
-                      <GraduationCap size={20} className="text-gray-700" />
-                    </div>
-                    <div>
-                      <p className="font-bold text-sm">{edu.degree}</p>
-                      <p className="text-sm text-gray-600">{edu.institution} {edu.period}</p>
-                    </div>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Right Column - Stats */}
-          <motion.div 
-            className="flex flex-col justify-center items-center gap-8"
-            initial={{ opacity: 0, x: 50 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-          >
-            <motion.div 
-              className="bg-white rounded-2xl p-8 shadow-lg w-full max-w-xs relative"
-              whileHover={{ scale: 1.05 }}
-            >
-              <div className="absolute -top-4 -right-4 bg-blue-600 text-white rounded-full w-12 h-12 flex items-center justify-center shadow-lg">
-                <Plus size={24} />
-              </div>
-              <div className="text-5xl font-bold mb-2">20+</div>
-              <p className="text-gray-600">Projetos</p>
-            </motion.div>
-
-            <motion.div 
-              className="bg-white rounded-2xl p-8 shadow-lg w-full max-w-xs"
-              whileHover={{ scale: 1.05 }}
-            >
-              <div className="text-5xl font-bold mb-2">20+</div>
-              <p className="text-gray-600">Projetos</p>
-            </motion.div>
-
-            <motion.div 
-              className="bg-white rounded-2xl p-8 shadow-lg w-full max-w-xs"
-              whileHover={{ scale: 1.05 }}
-            >
-              <div className="text-5xl font-bold mb-2">20+</div>
-              <p className="text-gray-600">Projetos</p>
-            </motion.div>
-          </motion.div>
+            <ResumeColumn
+              label={t('about.experience')}
+              items={experience.items}
+              loading={experience.loading}
+              emptyMessage={t('about.expEmpty')}
+            />
+            <ResumeColumn
+              label={t('about.education')}
+              items={education.items}
+              loading={education.loading}
+              emptyMessage={t('about.eduEmpty')}
+            />
+          </div>
         </div>
       </div>
     </section>

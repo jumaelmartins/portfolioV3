@@ -1,141 +1,157 @@
-import { motion } from 'motion/react';
+import { CSSProperties, useRef } from 'react';
 import { useApp } from '../context/AppContext';
-import React from 'react';
+import { Hoverable } from './primitives';
+import { SectionKicker } from './SectionKicker';
 
-const AnimatedCodeIcon = () => (
-  <div className="relative w-7 h-7">
-    <motion.div className="absolute left-0" animate={{ x: [0, -3, 0] }} transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}>
-      <svg width="14" height="28" viewBox="0 0 14 28" fill="none">
-        <path d="M10 4L2 14L10 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    </motion.div>
-    <motion.div className="absolute right-0" animate={{ x: [0, 3, 0] }} transition={{ duration: 2, repeat: Infinity, repeatDelay: 1 }}>
-      <svg width="14" height="28" viewBox="0 0 14 28" fill="none">
-        <path d="M4 4L12 14L4 24" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
-      </svg>
-    </motion.div>
-  </div>
-);
+const MONO = "'JetBrains Mono', monospace";
+const DISPLAY = "'Familjen Grotesk', sans-serif";
 
-const AnimatedServerIcon = () => (
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="2" y="2" width="20" height="8" rx="2" ry="2" />
-    <rect x="2" y="14" width="20" height="8" rx="2" ry="2" />
-    <line x1="6" y1="6" x2="6.01" y2="6" />
-    <line x1="6" y1="18" x2="6.01" y2="18" />
-    <motion.circle cx="6" cy="6" r="1" fill="currentColor" animate={{ opacity: [1, 0.3, 1], scale: [1, 1.3, 1] }} transition={{ duration: 1.5, repeat: Infinity, repeatDelay: 0.5 }} />
-  </svg>
-);
+interface ServiceItem {
+  n: string;
+  title: string;
+  desc: string;
+  tags: string[];
+  price: string;
+  featured?: boolean;
+}
 
-const AnimatedWorkflowIcon = () => (
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <rect x="2" y="6" width="6" height="6" rx="1" />
-    <rect x="16" y="6" width="6" height="6" rx="1" />
-    <rect x="9" y="12" width="6" height="6" rx="1" />
-    <motion.path d="M8 9h3" initial={{ pathLength: 0 }} animate={{ pathLength: [0, 1, 1, 0] }} transition={{ duration: 2, repeat: Infinity, repeatDelay: 0.5 }} />
-    <motion.path d="M13 9h3" initial={{ pathLength: 0 }} animate={{ pathLength: [0, 1, 1, 0] }} transition={{ duration: 2, repeat: Infinity, repeatDelay: 0.5 }} />
-    <motion.path d="M12 12v-3" initial={{ pathLength: 0 }} animate={{ pathLength: [0, 1, 1, 0] }} transition={{ duration: 2, repeat: Infinity, repeatDelay: 0.5 }} />
-  </svg>
-);
+const pill: CSSProperties = {
+  fontFamily: MONO,
+  fontSize: '11.5px',
+  color: '#8B8D9B',
+  border: '1px solid rgba(255,255,255,0.1)',
+  borderRadius: '999px',
+  padding: '6px 12px',
+};
 
-const AnimatedRocketIcon = () => (
-  <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z" />
-    <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z" />
-    <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0" />
-    <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5" />
-    <motion.path d="M3 19l2-2" strokeWidth="2.5" animate={{ opacity: [0.4, 1, 0.4], pathLength: [0.3, 1, 0.3], y: [0, -1, 0] }} transition={{ duration: 0.5, repeat: Infinity }} />
-    <motion.path d="M5 21l2-2" strokeWidth="2.5" animate={{ opacity: [0.3, 0.9, 0.3], pathLength: [0.4, 1, 0.4], y: [0, -1.5, 0] }} transition={{ duration: 0.6, repeat: Infinity, delay: 0.1 }} />
-  </svg>
-);
+const arrowBtn: CSSProperties = {
+  width: '44px',
+  height: '44px',
+  borderRadius: '50%',
+  borderWidth: '1px',
+  borderStyle: 'solid',
+  borderColor: 'rgba(255,255,255,0.16)',
+  background: 'transparent',
+  color: '#F2F1EE',
+  fontSize: '17px',
+  cursor: 'pointer',
+  transition: 'border-color .3s, transform .3s, background .3s',
+};
+const arrowHover: CSSProperties = {
+  borderColor: '#8B7CF6',
+  background: 'rgba(139,124,246,0.12)',
+  transform: 'translateY(-2px)',
+};
+
+function ServiceCard({ item, isLast }: { item: ServiceItem; isLast: boolean }) {
+  const { t } = useApp();
+  return (
+    <Hoverable
+      style={{
+        borderWidth: '1px',
+        borderStyle: 'solid',
+        borderColor: item.featured ? 'rgba(139,124,246,0.34)' : 'rgba(255,255,255,0.09)',
+        borderRadius: '22px',
+        padding: '34px',
+        flex: '0 0 clamp(272px,78vw,352px)',
+        scrollSnapAlign: 'start',
+        background: item.featured
+          ? 'linear-gradient(180deg,rgba(139,124,246,0.10),rgba(10,10,13,0.6))'
+          : 'rgba(10,10,13,0.6)',
+        transition: 'transform .4s cubic-bezier(.2,.8,.2,1), border-color .4s, box-shadow .4s',
+      }}
+      hoverStyle={{
+        transform: 'translateY(-8px)',
+        borderColor: item.featured ? 'rgba(139,124,246,0.7)' : 'rgba(139,124,246,0.45)',
+        boxShadow: item.featured ? '0 24px 60px rgba(139,124,246,0.18)' : '0 24px 60px rgba(0,0,0,0.5)',
+      }}
+    >
+      <div style={{ fontFamily: MONO, fontSize: '12px', color: '#8B7CF6', letterSpacing: '0.1em' }}>{item.n}</div>
+      <h3 style={{ fontFamily: DISPLAY, fontSize: '27px', fontWeight: 600, letterSpacing: '-0.03em', margin: '16px 0 12px' }}>
+        {item.title}
+      </h3>
+      <p style={{ fontSize: '15.5px', lineHeight: 1.66, color: '#9EA0AE', margin: '0 0 24px' }}>{item.desc}</p>
+      <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '26px' }}>
+        {item.tags.map((tag) => (
+          <span key={tag} style={pill}>{tag}</span>
+        ))}
+      </div>
+      <div style={{ borderTop: '1px solid rgba(255,255,255,0.08)', paddingTop: '18px', fontFamily: MONO, fontSize: '12px', color: '#8B8D9B' }}>
+        <span>{item.price}</span>
+        {!isLast && <> <span style={{ color: '#F2F1EE' }}>R$ —</span></>} · <span>{t('services.onRequest')}</span>
+      </div>
+    </Hoverable>
+  );
+}
 
 export function Services() {
   const { t } = useApp();
-  const [hoveredIndex, setHoveredIndex] = React.useState<number | null>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+  const items = t('services.items') as ServiceItem[];
 
-  const services = [
-    { icon: AnimatedCodeIcon, key: 'web', tech: ['React', 'Next.js', 'TypeScript', 'Tailwind CSS'] },
-    { icon: AnimatedServerIcon, key: 'api', tech: ['Node.js', 'Express', 'PostgreSQL', 'MongoDB'] },
-    { icon: AnimatedWorkflowIcon, key: 'automation', tech: ['Zapier', 'Make', 'Custom APIs', 'Webhooks'] },
-    { icon: AnimatedRocketIcon, key: 'mvp', tech: ['Agile', 'Rapid Prototyping', 'User Testing'] },
-  ];
+  const nudge = (dir: number) => {
+    const track = trackRef.current;
+    if (!track) return;
+    const card = track.firstElementChild as HTMLElement | null;
+    const step = card ? card.getBoundingClientRect().width + 22 : track.clientWidth * 0.8;
+    track.scrollBy({ left: dir * step, behavior: 'smooth' });
+  };
 
   return (
     <section
       id="servicos"
-      className="py-20 px-6 overflow-hidden transition-colors"
-      style={{ background: 'var(--ds-surface-alt)' }}
+      style={{
+        position: 'relative',
+        zIndex: 1,
+        background: 'rgba(18,19,26,0.55)',
+        borderTop: '1px solid rgba(255,255,255,0.07)',
+        borderBottom: '1px solid rgba(255,255,255,0.07)',
+      }}
     >
-      <div className="container mx-auto max-w-6xl">
-        <motion.div
-          className="text-center mb-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+      <div style={{ maxWidth: '1240px', margin: '0 auto', padding: 'clamp(84px,11vw,130px) clamp(20px,4vw,28px)' }}>
+        <SectionKicker label={t('services.kicker')} />
+        <h2
+          className="rv"
+          style={{
+            fontFamily: DISPLAY,
+            fontWeight: 600,
+            fontSize: 'clamp(32px,3.6vw,52px)',
+            lineHeight: 1.06,
+            letterSpacing: '-0.04em',
+            margin: '0 0 26px',
+          }}
         >
-          <h2 className="text-4xl md:text-5xl font-bold mb-4 text-gray-900 dark:text-white">
-            {t('services.title')}
-          </h2>
-          <p className="text-xl text-gray-500 dark:text-[#6b7fa3] max-w-2xl mx-auto">
-            {t('services.subtitle')}
-          </p>
-        </motion.div>
+          {t('services.headline')}
+        </h2>
 
-        <div className="grid md:grid-cols-2 gap-6">
-          {services.map((service, index) => (
-            <motion.div
-              key={index}
-              className="rounded-2xl p-8 border cursor-pointer transition-all duration-300"
-              style={{
-                background: 'var(--ds-surface)',
-                borderColor: 'var(--ds-border)',
-              }}
-              initial={{ opacity: 0, y: 30 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.1 }}
-              onHoverStart={() => setHoveredIndex(index)}
-              onHoverEnd={() => setHoveredIndex(null)}
-              animate={{
-                filter: hoveredIndex !== null && hoveredIndex !== index ? 'blur(2px)' : 'blur(0px)',
-                opacity: hoveredIndex !== null && hoveredIndex !== index ? 0.55 : 1,
-                scale: hoveredIndex === index ? 1.02 : 1,
-                boxShadow: hoveredIndex === index
-                  ? '0 8px 30px rgba(37,99,235,0.10)'
-                  : '0 1px 3px rgba(0,0,0,0.04)',
-              }}
-            >
-              <div className="mb-6">
-                <div
-                  className="w-14 h-14 rounded-xl flex items-center justify-center mb-5 text-blue-600 dark:text-blue-400"
-                  style={{ background: 'var(--ds-accent-subtle)' }}
-                >
-                  <service.icon />
-                </div>
-                <h3 className="text-2xl font-bold mb-3 text-gray-900 dark:text-white">
-                  {t(`services.${service.key}.title`)}
-                </h3>
-                <p className="text-gray-500 dark:text-[#6b7fa3] leading-relaxed mb-5">
-                  {t(`services.${service.key}.desc`)}
-                </p>
-              </div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '16px', margin: '0 0 22px' }}>
+          <span style={{ fontFamily: MONO, fontSize: '11.5px', letterSpacing: '0.1em', textTransform: 'uppercase', color: '#7A7C8A' }}>
+            {t('services.hint')}
+          </span>
+          <div style={{ display: 'flex', gap: '10px' }}>
+            <Hoverable as="button" type="button" aria-label="Anterior" onClick={() => nudge(-1)} style={arrowBtn} hoverStyle={arrowHover}>
+              &#8592;
+            </Hoverable>
+            <Hoverable as="button" type="button" aria-label="Próximo" onClick={() => nudge(1)} style={arrowBtn} hoverStyle={arrowHover}>
+              &#8594;
+            </Hoverable>
+          </div>
+        </div>
 
-              <div className="flex flex-wrap gap-2">
-                {service.tech.map((tech, i) => (
-                  <span
-                    key={i}
-                    className="px-3 py-1 rounded-full text-sm font-medium text-gray-600 dark:text-gray-400"
-                    style={{
-                      background: 'var(--ds-surface-alt)',
-                      border: '1px solid var(--ds-border)',
-                    }}
-                  >
-                    {tech}
-                  </span>
-                ))}
-              </div>
-            </motion.div>
+        <div
+          ref={trackRef}
+          data-track="services"
+          style={{
+            display: 'flex',
+            gap: '22px',
+            overflowX: 'auto',
+            scrollSnapType: 'x mandatory',
+            padding: '8px 2px 26px',
+            scrollPaddingLeft: '2px',
+          }}
+        >
+          {items.map((item, i) => (
+            <ServiceCard key={item.n} item={item} isLast={i === items.length - 1} />
           ))}
         </div>
       </div>

@@ -1,36 +1,35 @@
+import { AppProvider } from './context/AppContext';
+import { PortfolioProvider } from './context/PortfolioContext';
+import { Background } from './components/Background';
 import { Header } from './components/Header';
 import { Hero } from './components/Hero';
-import { FloatingNav } from './components/FloatingNav';
-import { FloatingWhatsApp } from './components/FloatingWhatsApp';
-import { Problems } from './components/Problems';
+import { StackMarquee } from './components/StackMarquee';
+import { About } from './components/About';
 import { Services } from './components/Services';
-import { CaseStudies } from './components/CaseStudies';
-import { WhyWorkWithMe } from './components/WhyWorkWithMe';
-import { Process } from './components/Process';
-import { TechStack } from './components/TechStack';
 import { Projects } from './components/Projects';
-import { FinalCTA } from './components/FinalCTA';
+import { CaseStudies } from './components/CaseStudies';
+import { Blog } from './components/Blog';
+import { Contact } from './components/Contact';
 import { Footer } from './components/Footer';
-import { AppProvider } from './context/AppContext';
 
 export default function App() {
   return (
     <AppProvider>
-      <div className="min-h-screen bg-white dark:bg-gray-900 transition-colors overflow-x-hidden">
-        <Header />
-        <Hero />
-        <FloatingNav />
-        <FloatingWhatsApp />
-        <Problems />
-        <Services />
-        <CaseStudies />
-        <WhyWorkWithMe />
-        <Process />
-        <TechStack />
-        <Projects />
-        <FinalCTA />
-        <Footer />
-      </div>
+      <PortfolioProvider>
+        <div style={{ position: 'relative', width: '100%', maxWidth: '100vw', background: '#0A0A0D', overflowX: 'hidden' }}>
+          <Background />
+          <Header />
+          <Hero />
+          <StackMarquee />
+          <About />
+          <Services />
+          <Projects />
+          <CaseStudies />
+          <Blog />
+          <Contact />
+          <Footer />
+        </div>
+      </PortfolioProvider>
     </AppProvider>
   );
 }

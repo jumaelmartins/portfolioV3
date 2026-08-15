@@ -56,7 +56,7 @@ const translations: Record<Language, Record<string, any>> = {
     // About
     'about.kicker': '01 — Sobre',
     'about.role': 'Full Stack Software Engineer',
-    'about.location': 'São Luís, MA — Brasil',
+    'about.location': 'Salvador, BA — Brasil',
     'about.headline': 'Construo a camada entre o negócio e seus sistemas.',
     'about.body':
       'Três anos entregando produtos full-stack: SaaS multi-tenant, dashboards internos, APIs REST, bots de WhatsApp e agentes de IA. Trabalho de ponta a ponta — arquitetura, modelo de dados, interface, deploy — e documento o que entrego.',
@@ -140,7 +140,7 @@ const translations: Record<Language, Record<string, any>> = {
     // About
     'about.kicker': '01 — About',
     'about.role': 'Full Stack Software Engineer',
-    'about.location': 'São Luís, MA — Brazil',
+    'about.location': 'Salvador, BA — Brazil',
     'about.headline': 'I build the layer between the business and its systems.',
     'about.body':
       'Three years shipping full-stack products: multi-tenant SaaS, internal dashboards, REST APIs, WhatsApp bots, and AI agents. I work end to end — architecture, data model, interface, deploy — and I document what I hand over.',

@@ -13,6 +13,7 @@ export interface UiProject {
   category: string;
   liveUrl: string;
   repoUrl: string;
+  videoUrl: string;
   year: string;
 }
 
@@ -39,6 +40,7 @@ export function useProjects() {
         category: (p.category?.category || '').toUpperCase(),
         liveUrl: p.live_url || '',
         repoUrl: p.repo_url || '',
+        videoUrl: p.video_url || p.video || p.demo_video_url || p.youtube_url || '',
         year: p.created_at ? String(new Date(p.created_at).getFullYear()) : '',
       };
     });

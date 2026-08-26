@@ -89,6 +89,8 @@ const translations: Record<Language, Record<string, any>> = {
     'projects.empty': 'Nenhum projeto por aqui ainda.',
     'projects.source': 'Código no GitHub',
     'projects.live': 'Ver ao vivo',
+    'projects.video': 'Ver vídeo',
+    'projects.videoClose': 'Fechar vídeo',
     'projects.demoSoon': 'Demo ao vivo em breve',
 
     // Case studies
@@ -173,6 +175,8 @@ const translations: Record<Language, Record<string, any>> = {
     'projects.empty': 'No projects here yet.',
     'projects.source': 'Source code',
     'projects.live': 'View live',
+    'projects.video': 'Watch video',
+    'projects.videoClose': 'Close video',
     'projects.demoSoon': 'Live demo soon',
 
     // Case studies

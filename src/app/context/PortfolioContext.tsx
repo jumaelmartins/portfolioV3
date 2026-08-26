@@ -31,6 +31,13 @@ export interface ApiProject {
   description: string | null;
   repo_url: string | null;
   live_url: string | null;
+  // Video URL added in the portfolio manager. The exact field name wasn't
+  // confirmable against the live API (key rotated), so useProjects reads it
+  // defensively across the likely names below.
+  video_url?: string | null;
+  video?: string | null;
+  demo_video_url?: string | null;
+  youtube_url?: string | null;
   category?: { category?: string } | null;
   technologies?: { tech: string }[] | null;
   f_images?: ApiImage | null;

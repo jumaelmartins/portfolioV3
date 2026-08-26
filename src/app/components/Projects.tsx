@@ -1,8 +1,9 @@
-import { CSSProperties } from 'react';
+import { CSSProperties, useState } from 'react';
 import { useApp } from '../context/AppContext';
 import { useProjects, UiProject } from '../hooks/useProjects';
 import { Hoverable } from './primitives';
 import { SectionKicker } from './SectionKicker';
+import { VideoModal } from './VideoModal';
 
 const MONO = "'JetBrains Mono', monospace";
 const DISPLAY = "'Familjen Grotesk', sans-serif";
@@ -37,6 +38,7 @@ const note: CSSProperties = {
 
 function ProjectRow({ project, index }: { project: UiProject; index: number }) {
   const { t } = useApp();
+  const [videoOpen, setVideoOpen] = useState(false);
   const num = String(index + 1).padStart(3, '0');
 
   return (
@@ -180,9 +182,31 @@ function ProjectRow({ project, index }: { project: UiProject; index: number }) {
                 {t('projects.demoSoon')}
               </span>
             )}
+            {project.videoUrl && (
+              <Hoverable
+                as="button"
+                type="button"
+                onClick={() => setVideoOpen(true)}
+                style={{
+                  ...linkBtn,
+                  display: 'inline-flex',
+                  alignItems: 'center',
+                  gap: '8px',
+                  cursor: 'pointer',
+                  background: 'transparent',
+                }}
+                hoverStyle={linkHover}
+              >
+                <span aria-hidden="true" style={{ fontSize: '10px', color: '#8B7CF6' }}>▶</span>
+                {t('projects.video')}
+              </Hoverable>
+            )}
           </div>
         </div>
       </div>
+      {videoOpen && project.videoUrl && (
+        <VideoModal url={project.videoUrl} title={project.title} onClose={() => setVideoOpen(false)} />
+      )}
     </details>
   );
 }
